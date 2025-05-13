@@ -20,7 +20,7 @@ jobs:
           password: ${{ secrets.CONTAINER_REGISTRY }}
 
       - name: Build Docker image
-        run: docker build -t ghcr.io/fabriciolimamoreira/githubactions-pipeline:latest .
+        run: docker build -t ghcr.io/fabricioLMoreira/githubactions-pipeline:latest .
 
       - name: Push Docker image
-        run: docker push ghcr.io/fabriciolimamoreira/githubactions-pipeline:latest
+        run: docker push ghcr.io/fabricioLMoreira/githubactions-pipeline:latest
