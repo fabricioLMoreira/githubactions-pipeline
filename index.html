@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Deploy Automatizado</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(120deg, #0f2027, #203a43, #2c5364);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    h1 {
+      font-size: 3rem;
+      color: #00d8ff;
+      margin-bottom: 0.3rem;
+    }
+
+    .students {
+      font-size: 1.2rem;
+      color: #ffdd57;
+      line-height: 1.8;
+      margin-bottom: 2rem;
+    }
+
+    p.description {
+      font-size: 1.2rem;
+      max-width: 700px;
+      margin-bottom: 2rem;
+    }
+
+    .highlight {
+      color: #ffdd57;
+      font-weight: bold;
+    }
+
+    .icons {
+      margin: 1rem 0;
+    }
+
+    .icons img {
+      width: 40px;
+      margin: 0 10px;
+      vertical-align: middle;
+    }
+
+    .pipeline-steps {
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 1rem 2rem;
+      text-align: left;
+      max-width: 600px;
+      margin-top: 1rem;
+    }
+
+    .pipeline-steps h2 {
+      color: #00d8ff;
+    }
+
+    .pipeline-steps ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .pipeline-steps li {
+      margin-bottom: 0.8rem;
+      font-size: 1.05rem;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background-color: rgba(0, 0, 0, 0.2);
+      font-size: 0.9rem;
+      color: #aaa;
+    }
+
+    .gif {
+      margin-top: 2rem;
+      border-radius: 10px;
+      max-width: 90%;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Deploy Automatizado com GitHub Actions</h1>
+    <div class="students">
+      Fabrício Moreira – 2011075131 <br>
+      Paula Lopes - 2009076370
+    </div>
+
+    <p class="description">
+      Esta aplicação exemplifica a implementação de uma <span class="highlight">Integração e Entrega Contínuas (CI/CD)</span>
+      utilizando <span class="highlight">GitHub Actions</span>,
+      com construção e publicação automática de uma imagem <span class="highlight">Docker</span> 
+      no GitHub Container Registry, seguida da sua execução numa máquina virtual.
+    </p>
+
+    <div class="icons">
+      <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="GitHub">
+      <img src="https://www.docker.com/wp-content/uploads/2022/03/Moby-logo.png" alt="Docker">
+      <img src="https://cdn-icons-png.flaticon.com/512/919/919832.png" alt="CI/CD">
+    </div>
+
+    <div class="pipeline-steps">
+      <h2>Como funciona o pipeline:</h2>
+      <ul>
+        <li>1. Commit para o repositório GitHub</li>
+        <li>2. GitHub Actions compila o código e cria a imagem Docker</li>
+        <li>3. A imagem é publicada no GitHub Container Registry (GHCR)</li>
+        <li>
+          4. A imagem é instalada e lançada numa máquina virtual do grupo com o seguinte comando:
+          <pre style="
+  background-color: rgba(0,0,0,0.4);
+  padding: 0.8rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  max-width: 100%;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-x: auto;
+">
+docker pull ghcr.io/paulalopesdeveloper/github-actions-hello-test:latest
+
+docker run -d -p 80:80 ghcr.io/paulalopesdeveloper/github-actions-hello-test:latest
+</pre>
+
+        
+      </ul>
+    </div>
+
+    <img class="gif" src="https://media.giphy.com/media/qgQUggAC3Pfv687qPC/giphy.gif" alt="Pipeline CI/CD GIF">
+  </main>
+
+  <footer>
+    GitHub Actions · Plataformas de Desenvolvimento · 24/25
+  </footer>
+</body>
+</html>
