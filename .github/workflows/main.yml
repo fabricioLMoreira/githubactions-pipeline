@@ -24,3 +24,10 @@ jobs:
 
       - name: Push Docker image
         run: docker push ghcr.io/fabriciolmoreira/githubactions-pipeline:latest
+  
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
