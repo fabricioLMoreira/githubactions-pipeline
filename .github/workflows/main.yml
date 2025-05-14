@@ -145,7 +145,7 @@ jobs:
 
       - name: Test if app is responding on port 80
         run: |
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:80)
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8082)
           echo "HTTP status: $STATUS"
           if [ "$STATUS" -ne 200 ]; then
             echo "App is not healthy! HTTP $STATUS"
