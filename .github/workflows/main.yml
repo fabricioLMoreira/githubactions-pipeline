@@ -22,7 +22,7 @@ env:
 
 jobs:
   build:
-
+    name: Build and Push Docker Image
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -82,6 +82,7 @@ jobs:
           cache-to: type=gha,mode=max
           
   sign:
+    name: Sign package
     runs-on: ubuntu-latest
     needs: build
     permissions:
@@ -145,7 +146,7 @@ jobs:
 
       - name: Test if app is responding on port 80
         run: |
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8082)
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:80)
           echo "HTTP status: $STATUS"
           if [ "$STATUS" -ne 200 ]; then
             echo "App is not healthy! HTTP $STATUS"
