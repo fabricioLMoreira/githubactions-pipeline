@@ -107,27 +107,30 @@ jobs:
         # against the sigstore community Fulcio instance.
         run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
 
-  deploy:
-    name: Deploy Container
-    needs: build
-    runs-on: self-hosted
+deploy:
+  name: Deploy Container
+  needs: build
+  runs-on: self-hosted
 
-    if: github.ref == 'refs/heads/main'
+  if: github.ref == 'refs/heads/main'
 
-    steps:
-      - name: Login to GHCR
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.CONTAINER_REGISTRY }}
+  steps:
+    - name: Log into GHCR
+      uses: docker/login-action@v3
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.CONTAINER_REGISTRY }}
 
-      - name: Deploy Docker container
-        uses: SamKirkland/docker-run-action@v2
-        with:
-          image: ${{ needs.build.outputs.image_tag }}
-          name: my-app
-          ports: 80:80
-          pull: true
-          detach: true
-          restart: always
+    - name: Pull latest image
+      run: docker pull ${{ needs.build.outputs.image_tag }}
+
+    - name: Stop and remove old container
+      run: |
+        docker stop my-app || true
+        docker rm my-app || true
+
+    - name: Run new container
+      run: |
+        docker run -d --name my-app -p 80:80 --restart=always ${{ needs.build.outputs.image_tag }}
+
