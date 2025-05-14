@@ -27,6 +27,8 @@ jobs:
     permissions:
       contents: read
       packages: write
+    outputs:
+      image_tag: ${{ steps.meta.outputs.tags }}
 
     steps:
       - name: Checkout repository
@@ -104,3 +106,28 @@ jobs:
         # This step uses the identity token to provision an ephemeral certificate
         # against the sigstore community Fulcio instance.
         run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
+
+  deploy:
+    name: Deploy Container
+    needs: build
+    runs-on: self-hosted
+
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.CONTAINER_REGISTRY }}
+
+      - name: Deploy Docker container
+        uses: SamKirkland/docker-run-action@v2
+        with:
+          image: ${{ needs.build.outputs.image_tag }}
+          name: my-app
+          ports: 80:80
+          pull: true
+          detach: true
+          restart: always
