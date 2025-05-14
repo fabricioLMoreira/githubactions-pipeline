@@ -134,4 +134,21 @@ jobs:
       - name: Run new container
         run: |
           docker run -d --name my-app -p 80:80 --restart=always ${{ needs.build.outputs.image_tag }}
+  test:
+    name: Health Check
+    needs: deploy
+    runs-on: self-hosted
+
+    steps:
+      - name: Wait for app to start
+        run: sleep 5
+
+      - name: Test if app is responding on port 80
+        run: |
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:80)
+          echo "HTTP status: $STATUS"
+          if [ "$STATUS" -ne 200 ]; then
+            echo "App is not healthy! HTTP $STATUS"
+            exit 1
+          fi
 
